@@ -34,4 +34,4 @@ blobs:
   - provider: s3
     bucket: lambda-uploads-carrlos
     region: us-east-1
-    folder: lambda-processor-app/artifacts/{{ .Version }}
+    folder: lambda-processor-app/artifacts/v{{ .Version }}
