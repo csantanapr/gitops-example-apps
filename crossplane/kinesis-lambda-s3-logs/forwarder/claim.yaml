@@ -1,0 +1,13 @@
+apiVersion: awsblueprints.io/v1alpha1
+kind: FirehoseApp
+metadata:
+  name: kinesis-firehose-s3-lambda
+  labels:
+    firehoseapps.awsblueprints.io/app: firehose # required for DeliveryStream to contain this label
+spec:
+  name: "dynatrace"
+  envVariables: {}
+  resourceConfig:
+    providerConfigName: aws-provider-config
+    region: us-east-1
+  environmentConfigs: dev # This allows to use data from EnvironmentConfig
