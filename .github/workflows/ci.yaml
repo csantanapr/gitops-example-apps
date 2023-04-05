@@ -6,7 +6,7 @@ on:
 
 permissions:
   contents: write
-  
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -37,11 +37,11 @@ jobs:
 
     - name: Set artifact name as environment variable
       run: echo "ARTIFACT_NAME=$(echo '${{ steps.goreleaser.outputs.artifacts }}' | jq -r '.[] | select(.type == "Archive").name')" >> $GITHUB_ENV
- 
+
     - name: Modify file
       run: |
         # Use sed to replace the bucketKey value in the file with the ARTIFACT_NAME
-        sed -i "s/bucketKey:.*/bucketKey: lambda-processor-app\/artifacts\/${{ env.ARTIFACT_NAME }}/g" claim/sqs-lambda-s3-claim.yaml
+        sed -i "s/bucketKey:.*/bucketKey: lambda-processor-app\/artifacts\/$GITHUB_REF_NAME\/${{ env.ARTIFACT_NAME }}/g" claim/sqs-lambda-s3-claim.yaml
 
     - name: Commit & Push changes
       uses: actions-js/push@v1.4
