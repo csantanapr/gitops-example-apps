@@ -3,15 +3,64 @@ on:
   push:
     branches:
       - main
+      - 'v*'
+    tags:
+      - 'v*'
     paths:
       - 'app/**'
 
 jobs:
-  release-on-push:
+  go:
     runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: rymndhng/release-on-push-action@master
-        with:
-          bump_version_scheme: patch
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - run: git fetch --force --tags
+    - uses: actions/setup-go@v4
+      with:
+        go-version: stable
+    - name: Prepare
+      id: prepare
+      run: |
+        if [[ $GITHUB_REF == refs/tags/* ]]; then
+          echo ::set-output name=tag_name::${GITHUB_REF#refs/tags/}
+        fi
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v2
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1
+
+    - id: goreleaser
+      uses: goreleaser/goreleaser-action@v4
+      with:
+        distribution: goreleaser
+        version: latest
+        args: release --clean
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: GitHub Release
+      uses: softprops/action-gh-release@v1
+      if: success() && startsWith(github.ref, 'refs/tags/')
+      with:
+        draft: true
+        name: ${{ steps.prepare.outputs.tag_name }}
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Set artifact name as environment variable
+      run: echo "ARTIFACT_NAME=$(echo '${{ steps.goreleaser.outputs.artifacts }}' | jq -r '.[] | select(.type == "Archive").name')" >> $GITHUB_ENV
+
+    - name: Modify file
+      run: |
+        # Use sed to replace the bucketKey value in the file with the ARTIFACT_NAME
+        sed -i "s/bucketKey:.*/bucketKey: lambda-processor-app\/artifacts\/$GITHUB_REF_NAME\/${{ env.ARTIFACT_NAME }}/g" claim/sqs-lambda-s3-claim.yaml
+
+    - name: Commit & Push changes
+      uses: actions-js/push@v1.4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        message: "Updating claim bucketKey version to ${{ env.ARTIFACT_NAME }}"
