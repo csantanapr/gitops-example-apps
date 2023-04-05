@@ -1,0 +1,37 @@
+# Make sure to check the documentation at http://goreleaser.com
+
+builds:
+  - id: main
+    dir: app
+    binary: main
+    main: main.go
+    goos: [linux]
+    goarch: [amd64]
+    env: ["CGO_ENABLED=0"]
+
+archives:
+  - id: lambda
+    rlcp: true
+    format: zip
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - none*
+
+checksum:
+  name_template: 'checksums.txt'
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+
+blobs:
+  - provider: s3
+    bucket: lambda-uploads-carrlos
+    region: us-east-1
+    folder: lambda-processor-app/artifacts/{{ .Version }}
