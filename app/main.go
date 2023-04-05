@@ -29,7 +29,7 @@ type config struct {
 }
 
 func HandleRequest(ctx context.Context, event events.SQSEvent) (string, error) {
-	fmt.Printf("Handling %d messages\n ", len(event.Records))
+	fmt.Printf("DEBUG HERE Handling %d messages\n ", len(event.Records))
 
 	if conf.Processor {
 		for i := range event.Records {
