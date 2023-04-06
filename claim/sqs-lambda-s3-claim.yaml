@@ -10,7 +10,7 @@ spec:
       awsblueprints.io/environment: dev
       serverless.awsblueprints.io/app: sqs-lambda-s3
   bucketName: lambda-uploads-carrlos
-  bucketKey: lambda-processor-app/artifacts/v0.3.1/gitops-example-apps_0.3.1_linux_amd64.zip
+  bucketKey: lambda-processor-app/artifacts/v0.4.0/gitops-example-apps_0.4.0_linux_amd64.zip
   memorySize: 128
   resourceConfig:
     providerConfigName: aws-provider-config
