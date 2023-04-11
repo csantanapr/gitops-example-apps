@@ -1,0 +1,12 @@
+apiVersion: awsblueprints.io/v1alpha1
+kind: ServerlessApp
+metadata:
+  name: stage-sqs-lambda-s3
+  labels:
+    environment: stage
+spec:
+  imageName: lambda-processor:v0.5.1
+  memorySize: 256
+  resourceConfig:
+    providerConfigName: aws-provider-config
+    region: us-east-1
