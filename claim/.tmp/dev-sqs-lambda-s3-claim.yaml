@@ -2,11 +2,9 @@ apiVersion: awsblueprints.io/v1alpha1
 kind: ServerlessApp
 metadata:
   name: dev-sqs-lambda-s3
-  labels:
-    environment: dev
+  namespace: dev
 spec:
   imageName: lambda-processor:v0.5.4
   memorySize: 128
   resourceConfig:
-    providerConfigName: aws-provider-config
     region: us-east-1

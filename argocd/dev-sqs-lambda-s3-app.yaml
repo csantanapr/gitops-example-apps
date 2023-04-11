@@ -10,12 +10,14 @@ spec:
   source:
     repoURL: https://github.com/csantanapr/gitops-example-apps.git
     targetRevision: HEAD
-    path: claim
+    path: claim/dev
   destination:
     server: https://kubernetes.default.svc
-    namespace: default
+    namespace: dev
   syncPolicy:
     automated:
       prune: true
       allowEmpty: true
       selfHeal: true
+    syncOptions:
+    - CreateNamespace=true
