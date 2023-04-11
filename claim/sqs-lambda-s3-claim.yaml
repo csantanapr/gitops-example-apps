@@ -5,7 +5,7 @@ metadata:
   labels:
     environment: dev
 spec:
-  imageName: lambda-processor:v0.5.3
+  imageName: lambda-processor:v0.5.4
   memorySize: 128
   resourceConfig:
     providerConfigName: aws-provider-config
