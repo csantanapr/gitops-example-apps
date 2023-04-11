@@ -6,4 +6,5 @@ metadata:
 spec:
   imageName: lambda-processor:v0.5.1
   memorySize: 256
+  resourceConfig: {}
 
