@@ -9,16 +9,9 @@ builds:
     goarch: [amd64]
     env: ["CGO_ENABLED=0"]
 
-archives:
-  - id: lambda
-    rlcp: true
-    format: zip
-    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
-    files:
-      - none*
-
-checksum:
-  name_template: 'checksums.txt'
+dockers:
+  - image_templates: 
+    - '{{ .Env.REGISTRY }}/{{ .Env.IMAGE_NAME }}:{{ .Tag }}'
 
 snapshot:
   name_template: "{{ .Tag }}-next"
@@ -29,9 +22,3 @@ changelog:
     exclude:
       - '^docs:'
       - '^test:'
-
-blobs:
-  - provider: s3
-    bucket: lambda-uploads-carrlos
-    region: us-east-1
-    folder: lambda-processor-app/artifacts/v{{ .Version }}

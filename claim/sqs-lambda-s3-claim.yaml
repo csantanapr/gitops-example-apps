@@ -1,16 +1,9 @@
 apiVersion: awsblueprints.io/v1alpha1
 kind: ServerlessApp
 metadata:
-  name: test-sqs-lambda-s3
-  namespace: default
+  name: dev-sqs-lambda-s3
 spec:
-  compositionSelector:
-    matchLabels:
-      awsblueprints.io/provider: aws
-      awsblueprints.io/environment: dev
-      serverless.awsblueprints.io/app: sqs-lambda-s3
-  bucketName: lambda-uploads-carrlos
-  bucketKey: lambda-processor-app/artifacts/v0.5.0/gitops-example-apps_0.5.0_linux_amd64.zip
+  imageName: lambda-processor:latest
   memorySize: 128
   resourceConfig:
     providerConfigName: aws-provider-config
