@@ -3,7 +3,7 @@ kind: ServerlessApp
 metadata:
   name: dev-sqs-lambda-s3
 spec:
-  imageName: lambda-processor:latest
+  imageName: lambda-processor:v0.5.1
   memorySize: 128
   resourceConfig:
     providerConfigName: aws-provider-config
