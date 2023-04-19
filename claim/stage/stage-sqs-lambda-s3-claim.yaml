@@ -4,8 +4,8 @@ metadata:
   name: stage-sqs-lambda-s3
   namespace: stage
 spec:
-  imageName: lambda-processor:v0.5.4
-  memorySize: 512
+  imageName: lambda-processor:v0.5.7
+  memorySize: 256
   resourceConfig:
     region: us-east-1
 
