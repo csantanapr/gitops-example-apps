@@ -4,7 +4,7 @@ metadata:
   name: dev-sqs-lambda-s3
   namespace: dev
 spec:
-  imageName: lambda-processor:v0.5.4
+  imageName: lambda-processor:v0.5.7
   memorySize: 128
   resourceConfig:
     region: us-east-1
